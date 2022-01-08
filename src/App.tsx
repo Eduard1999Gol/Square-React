@@ -1,9 +1,12 @@
-import React from 'react';
+import SquareForm from './components/SquareForm';
 
 function App() {
   return (
-    <h1>Test</h1>
-  )
+    <div className="flex flex-col gap-2 items-center">
+      <p className='text-4xl'>Square area calculation</p>
+      <SquareForm/>
+    </div>
+  );
 }
 
 export default App;
