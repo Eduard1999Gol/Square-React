@@ -9,6 +9,9 @@ const SquareForm = function () {
     const [oldSquare, setOldSquare] = useState({width: 0, height: 0});
     const [area, setArea] = useState(0);
     const [scope, setScope] = useState(0);
+    const [oldSquareApi, setOldSquareApi] = useState({width: 0, height: 0});
+    const [areaApi, setAreaApi] = useState(0);
+    const [scopeApi, setScopeApi] = useState(0);
 
     
 
@@ -20,17 +23,20 @@ const SquareForm = function () {
         setSquare({width:'', height:''});
     }
 
-    const fetchData = async () => {
+    const fetchData = async (event) => {
+        event.preventDefault();
         const res = await axios.get('http://localhost:3000/api/square/', { params: { height: square.height, width: square.width } });
-        console.log(res.data.args);
-        return res.data.args;
+        console.log(res.data);
+        setAreaApi(res.data.area);
+        setScopeApi(res.data.scope)
+        setOldSquareApi({width:res.data.width, height:res.data.height});
     }
 
     return(
         <div className="flex flex-col gap-2 items-center">
             <p className='text-4xl'> Height: {oldSquare.height}, Width: {oldSquare.width}</p>
             <p className='text-4xl'>Area: {area}, Scope: {scope}</p>
-            <form onSubmit={calculate} className="flex flex-row gap-2 p-4 items-center justify-center">
+            <form className="flex flex-row gap-2 p-4 items-center justify-center">
             <MyInput
             type="number"
             placeholder="Height"
@@ -49,9 +55,11 @@ const SquareForm = function () {
             required
             onChange={(e) => setSquare({...square, width: parseInt(e.target.value)})}
             />
-            <MyButton />
-            <MyButton type="button" onClick={fetchData}/>
+            <MyButton onClick={calculate} />
+            <MyButton onClick={fetchData} />
             </form>
+            <p className='text-4xl'> Height: {oldSquareApi.height}, Width: {oldSquareApi.width}</p>
+            <p className='text-4xl'>Area: {areaApi}, Scope: {scopeApi}</p>
         </div>
     )
 }
